@@ -1,48 +1,45 @@
 package main
 
-import (
-	"fmt"
-)
+import "fmt"
 
 func main() {
-	array := []int{1, 11, 7, 5, 12, 3, -2, 4}
+	array := []int{1,7,9,-1,-11,12,17,9}
+	//array := []int{-1, -11}
 	quickSort(&array, 0, len(array)-1)
-	fmt.Println(array)
 }
 
 func quickSort(array *[]int, start, end int) {
 	if start < end {
-		pivot := partitionSort(array, start, end)
+		pivot := partition(array, start, end)
 		fmt.Printf("pivot:%d, start:%d, end:%d, array:%v\n", pivot, start, end, *array)
+
 		quickSort(array, start, pivot-1)
 		quickSort(array, pivot+1, end)
 	}
 }
 
-func partitionSort(array *[]int, start, end int) int {
-	if end <= start {
+func partition(array *[]int, start, end int) int {
+	if start >= end {
 		return 0
 	}
 
-	pivot := (*array)[start]
-	head := start + 1
-	tail := end
-
-	for head < tail {
-		for head < tail && (*array)[tail] >= pivot {
-			tail--
+	pivot := start
+	start++
+	for start < end {
+		for (*array)[end] >= (*array)[pivot] && start < end {
+			end--
 		}
 
-		for head < tail && (*array)[head] <= pivot {
-			head++
+		for (*array)[start] <= (*array)[pivot] && start < end {
+			start++
 		}
 
-		(*array)[head], (*array)[tail] = (*array)[tail], (*array)[head]
+		(*array)[start], (*array)[end] = (*array)[end], (*array)[start]
 	}
 
-	if (*array)[head] > pivot {
-		(*array)[head], (*array)[start] = (*array)[start], (*array)[head]
+	if (*array)[start] < (*array)[pivot] {
+		(*array)[start], (*array)[pivot] = (*array)[pivot], (*array)[start]
 	}
 
-	return head
+	return start
 }
