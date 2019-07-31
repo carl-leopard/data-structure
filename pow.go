@@ -19,24 +19,36 @@ func main() {
 	fmt.Println("myPow(2, -3):", myPow(2, -3))
 }
 
+
 func myPow(x int, n int) float64 {
 	if n == 0 {
 		return 1
 	}
 
-	if n == 1 {
+	if x == 1 {
 		return float64(x)
 	}
 
+	multi := x
+	i := 2
+	negative := false
+
 	if n < 0 {
-		return 1/myPow(x, -n)
+		negative = true
+		n = -n
+	}
+	for i <= n{
+		multi *= multi
+		i *= 2
 	}
 
-	y := myPow(x, n/2)
-
-	if n&1 == 0 {
-		return float64(y) * float64(y)
+	if n&1 != 0 && n != 1{
+		multi *= x
 	}
 
-	return float64(y) * float64(y) * float64(x)
+	if negative {
+		return float64(1)/float64(multi)
+	}
+
+	return float64(multi)
 }
