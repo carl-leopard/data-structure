@@ -24,11 +24,10 @@ func main() {
 	showList(list)
 }
 
-func initTree(root *BinaryNode) *BinaryNode{
+func initTree(root *BinaryNode) *BinaryNode {
 	head := root
 
-		
-	root.left =  &BinaryNode{
+	root.left = &BinaryNode{
 		val: 1,
 		left: &BinaryNode{
 			val: 3,
@@ -46,7 +45,7 @@ func initTree(root *BinaryNode) *BinaryNode{
 			},
 		},
 	}
-	root.right =  &BinaryNode{
+	root.right = &BinaryNode{
 		val: 2,
 		left: &BinaryNode{
 			val: 5,
@@ -78,34 +77,33 @@ func bfs(root *BinaryNode) *List {
 	}
 
 	head := result
-	var stack []*BinaryNode
+	var queue []*BinaryNode
 	var cur *BinaryNode
 	visitM := make(map[*BinaryNode]bool)
 
+	queue = append(queue, root)
+	for len(queue) > 0 {
+		cur = queue[0]
 
-	stack = append(stack, root)
-	for len(stack) > 0 {
-		cur = stack[0]
 		if !visitM[cur] {
+			visitM[cur] = true
+
 			if cur.left != nil {
-				stack = append(stack, cur.left)
+				queue = append(queue, cur.left)
 			}
 
 			if cur.right != nil {
-				stack = append(stack, cur.right)
+				queue = append(queue, cur.right)
 			}
 
-			
 			l := &List{
 				node: cur,
 			}
 			result.next = l
 			result = result.next
-
-			visitM[cur]= true
 		}
-		
-		stack = stack[1:]
+
+		queue = queue[1:]
 	}
 
 	return head
