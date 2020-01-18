@@ -10,12 +10,3 @@ type MultiWayNode struct {
 	Val      int
 	Children []*MultiWayNode
 }
-
-type AVLNode struct {
-	Val        int
-	LeftChild  *AVLNode
-	RightChild *AVLNode
-
-	Depth  int //left-right=1|0|-1
-	Parent *AVLNode
-}
