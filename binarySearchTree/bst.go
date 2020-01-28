@@ -9,14 +9,16 @@ type BinarySearchTree struct {
 }
 
 func main() {
-	array := []int{5, 9, 4, 0, 2, 1, 3, 8, 10}
+	//array := []int{7, 4, 9, 2, 6, 1, 3, 5, 8, 10}
+	array := []int{7, 5, 9}
+	//array := []int{7}
 	root := BuildBinarySearchTree(array)
 	PreOrder(root)
 	fmt.Println()
-	DeleteBst(root, 0)
+	root = DeleteBst(root, 0)
 	PreOrder(root)
 	fmt.Println()
-	DeleteBst(root, 5)
+	root = DeleteBst(root, 7)
 	PreOrder(root)
 	fmt.Println()
 }
@@ -47,31 +49,26 @@ func PreOrder(root *BinarySearchTree) {
 	}
 }
 
-func DeleteBst(root *BinarySearchTree, val int) bool {
+func DeleteBst(root *BinarySearchTree, val int) *BinarySearchTree {
 	if root == nil {
-		return false
+		return root
 	}
 
 	if val == root.Val {
-		delete(root)
-		return true
+		root = delete(root)
+	} else if val < root.Val {
+		root.Lchild = DeleteBst(root.Lchild, val)
+	} else {
+		root.Rchild = DeleteBst(root.Rchild, val)
 	}
 
-	if val < root.Val {
-		DeleteBst(root.Lchild, val)
-	}
-
-	if val > root.Val {
-		DeleteBst(root.Rchild, val)
-	}
-
-	return false
+	return root
 }
 
-func delete(node *BinarySearchTree) {
+func delete(node *BinarySearchTree) *BinarySearchTree {
 	//删除的节点是叶子节点
 	if node.Lchild == nil && node.Rchild == nil {
-		node = nil
+		return nil
 	}
 
 	//删除的节点只有右孩子
@@ -81,7 +78,7 @@ func delete(node *BinarySearchTree) {
 		node.Val = rc.Val
 		node.Lchild = rc.Lchild
 		node.Rchild = rc.Rchild
-		return
+		return node
 	}
 
 	//删除的节点只有左孩子
@@ -91,7 +88,7 @@ func delete(node *BinarySearchTree) {
 		node.Val = lc.Val
 		node.Lchild = lc.Lchild
 		node.Rchild = lc.Rchild
-		return
+		return node
 	}
 
 	//删除的节点有左右孩子
@@ -103,12 +100,19 @@ func delete(node *BinarySearchTree) {
 	}
 
 	node.Val = rl.Val
-
-	if pre != node {
+	if node.Lchild != rl { //左子树的最大节点≠左孩子
 		pre.Rchild = rl.Lchild
-	} else {
+	} else { //左子树的最大节点=左孩子
 		pre.Lchild = rl.Lchild
 	}
+
+	// if pre != node {
+	// 	pre.Rchild = rl.Lchild
+	// } else {
+	// 	pre.Lchild = rl.Lchild
+	// }
+
+	return node
 }
 
 func InsertBinarySearchTree(root *BinarySearchTree, val int) *BinarySearchTree {
